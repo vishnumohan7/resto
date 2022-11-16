@@ -1,10 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:resto_cafe/src/fragments/cart_fragment.dart';
-import 'package:resto_cafe/src/fragments/category_fragment.dart';
-import 'package:resto_cafe/src/fragments/home_fragment.dart';
-import 'package:resto_cafe/src/fragments/restaurant_fragment.dart';
+import 'package:movies_app/src/cubit/movies/movies_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/src/models/movies.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,37 +11,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  List<Widget> fragments = [HomeFragment(),RestaurantFragment(),CategoryFragment(),CartFragment()];
-  int selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepOrangeAccent,
-        title: Text("Swiggy"),
-        centerTitle: true,
-      ),
-      body: fragments[selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.deepOrangeAccent,
-        unselectedItemColor: Colors.white,
-        selectedItemColor:Colors.orangeAccent,
-        currentIndex: selectedIndex,
-        onTap: (value){
-          setState(() {
-            selectedIndex = value;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home),label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.restaurant),label: "Restauarants"),
-          BottomNavigationBarItem(icon: Icon(Icons.fastfood_outlined),label: "Categories"),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined),label: "Cart"),
-        ],
+    return BlocProvider(
+      create: (context) => MoviesCubit()..getAllMovies(),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red,
+          title: Text("Netflix"),
+          centerTitle: true,
+        ),
+        body: BlocBuilder<MoviesCubit, MoviesState>(
+          builder: (context, state) {
+            if (state is MoviesLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is MoviesLoadSuccess) {
+              return _buildMovieListUI(state.movies);
+            }else if(state is MoviesLoadError){
+              return Center(child: Text("Something went wrong"));
+            }
+            else{
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
     );
+  }
+
+  _buildMovieListUI(List<Movies> movies) {
+    return ListView.builder(
+        itemCount: movies.length,
+        itemBuilder: (context, index) {
+          Movies item = movies[index];
+          return ListTile(
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(item.image.toString()),
+            ),
+            title: Text(item.name ?? ""),
+            subtitle: Text(item.summary ?? ""),
+          );
+        });
   }
 }

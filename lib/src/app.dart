@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:resto_cafe/src/pages/home_page.dart';
+import 'package:movies_app/src/pages/home_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.appeonex.resto.resto_cafe">
+    package="com.appeonex.resto.movies_app">
    <application
-        android:label="resto_cafe"
+        android:label="movies_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

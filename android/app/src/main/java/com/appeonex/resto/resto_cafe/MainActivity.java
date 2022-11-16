@@ -1,4 +1,4 @@
-package com.appeonex.resto.resto_cafe;
+package com.appeonex.resto.movies_app;
 
 import io.flutter.embedding.android.FlutterActivity;
 

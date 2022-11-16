@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:resto_cafe/src/helpers/storage_helper.dart';
-import 'package:resto_cafe/src/helpers/storage_key.dart';
-import 'package:resto_cafe/src/models/api_response_model.dart';
-
+import 'package:movies_app/src/helpers/storage_helper.dart';
+import 'package:movies_app/src/helpers/storage_key.dart';
+import 'package:movies_app/src/models/api_response_model.dart';
 
 class ApiHelper {
   static final ApiHelper _instance = ApiHelper._internal();
@@ -13,13 +12,11 @@ class ApiHelper {
 
   static final Dio dio = Dio();
   static initialize() {
-    dio.options.baseUrl = 'https://www.mocky.io/v2/5dfccffc310000efc8d2c1ad';
-    dio.options.connectTimeout = 60000; //5s
-    dio.options.receiveTimeout = 60000;
+    dio.options.baseUrl = 'https://api.tvmaze.com/';
+    dio.options.connectTimeout = 5000; //5s
+    dio.options.receiveTimeout = 5000;
   }
 
-// Api request for getting data //
-  //get request//
   Future<ApiResponseModel> makeGetRequest(String route,
       {Map<String, String>? headers}) async {
     Map<String, String> mHeaders = {};
@@ -32,9 +29,6 @@ class ApiHelper {
         await dio.get(route, options: Options(headers: mHeaders));
     return ApiResponseModel.fromJSON(response.data);
   }
-
-  //Api request for post request or updating data//
-  //post request//
 
   Future<ApiResponseModel> makePostRequest(String route, dynamic body,
       {Map<String, String>? headers}) async {
@@ -51,8 +45,6 @@ class ApiHelper {
     return apiResponseModel;
   }
 
-//Api request for edit or update data//
-  //put request//
   Future<ApiResponseModel> makePutRequest(String route, dynamic body,
       {Map<String, String>? headers}) async {
     Map<String, String> mHeaders = {};
@@ -68,8 +60,6 @@ class ApiHelper {
     return apiResponseModel;
   }
 
-//Api request for edit or updata data//
-  //patch request//
   Future<ApiResponseModel> makePatchRequest(String route, dynamic body,
       {Map<String, String>? headers}) async {
     Map<String, String> mHeaders = {};
@@ -84,8 +74,6 @@ class ApiHelper {
         ApiResponseModel.fromJSON(response.data);
     return apiResponseModel;
   }
-  //Api request for deleting the data//
-  //delete request//
 
   Future<ApiResponseModel> makeDeleteRequest(String route,
       {Map<String, String>? headers}) async {

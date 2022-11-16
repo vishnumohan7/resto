@@ -1,4 +1,4 @@
-# resto_cafe
+# movies_app
 
 A new Flutter project.
 
